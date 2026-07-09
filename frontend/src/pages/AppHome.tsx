@@ -103,7 +103,7 @@ export function AppHome() {
                       <BarChart2 size={18} className="text-violet-400" />
                     </div>
                     <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      {d.is_public && <Globe size={13} className="text-emerald-400" title="Published" />}
+                      {d.is_public && <Globe size={13} className="text-emerald-400" aria-label="Published" />}
                       <button
                         onClick={(e) => { e.stopPropagation(); handleDeleteDash(d.id) }}
                         className="text-slate-500 hover:text-red-400 p-1 transition-colors"
