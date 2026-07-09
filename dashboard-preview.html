@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dashboard Builder — Preview</title>
+<style>
+  :root{--bg:#ffffff;--card:#ffffff;--panel:#d9d9d9;--bd:#d9d9d9;
+        --accent:#f8511f;--accent-dk:#c23a12;--ink:#111111;--mut:#6b6b6b;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px;}
+  .topbar{display:flex;align-items:center;gap:12px;margin-bottom:16px;
+          border-bottom:3px solid var(--accent);padding-bottom:12px;}
+  .brand{font-size:22px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;}
+  .tag{color:var(--mut);font-size:14px;}
+  .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px;}
+  .btn{padding:8px 14px;border:1px solid #bdbdbd;border-radius:8px;background:var(--card);cursor:pointer;font-size:14px;}
+  .btn:hover{border-color:var(--accent);color:var(--accent-dk);}
+  label.file{display:inline-flex;align-items:center;gap:6px;}
+  select{padding:7px 8px;border:1px solid #bdbdbd;border-radius:8px;background:var(--card);font-size:14px;}
+  .status{font-size:13px;color:var(--mut);}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:16px;}
+  .kpi{background:#f5f5f5;border:1px solid var(--bd);border-top:3px solid var(--accent);border-radius:8px;padding:16px;}
+  .kpi-t{color:var(--mut);font-size:13px;text-transform:uppercase;letter-spacing:.4px;}
+  .kpi-v{font-size:23px;font-weight:800;margin-top:4px;}
+  .kpi-s{color:var(--mut);font-size:12px;margin-top:2px;}
+  .controls,.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px;}
+  .controls label,.filters label{display:block;font-size:13px;color:var(--mut);margin-bottom:4px;font-weight:600;}
+  .controls select,.filters select{width:100%;}
+  .panel{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px;}
+  .ai-fab{position:fixed;bottom:24px;right:24px;z-index:1000;background:var(--accent);color:#fff;border:none;border-radius:30px;padding:14px 22px;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 6px 18px rgba(248,81,31,.4);}
+  .ai-fab:hover{background:var(--accent-dk);}
+  .ai-fab::before{content:"✦ ";}
+  .ai-box{position:fixed;bottom:88px;right:24px;z-index:1000;width:360px;max-width:calc(100vw - 48px);background:#fff;border:1px solid var(--bd);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.18);padding:16px;display:flex;flex-direction:column;}
+  .ai-box.ai-hidden{display:none;}
+  .ai-box-head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--accent);padding-bottom:10px;margin-bottom:12px;}
+  .ai-title{font-size:15px;font-weight:800;}
+  .ai-badge{font-size:10px;font-weight:700;color:var(--accent-dk);text-transform:uppercase;letter-spacing:.4px;margin-top:3px;}
+  .ai-close{background:none;border:none;font-size:22px;line-height:1;color:var(--mut);cursor:pointer;}
+  .ai-close:hover{color:var(--ink);}
+  .ai-row{display:flex;gap:8px;}
+  .ai-input{flex:1;padding:10px 12px;border:1px solid #bdbdbd;border-radius:8px;font-size:14px;}
+  .ai-input:focus{outline:none;border-color:var(--accent);}
+  .ai-send{padding:10px 16px;border:none;border-radius:8px;background:var(--accent);color:#fff;font-size:14px;font-weight:700;cursor:pointer;}
+  .ai-send:hover{background:var(--accent-dk);}
+  .ai-hint{color:var(--mut);font-size:12px;margin-top:10px;}
+  .ai-answer{font-size:14px;line-height:1.55;white-space:pre-wrap;min-height:36px;max-height:280px;overflow:auto;margin-bottom:10px;}
+  .ai-answer:empty::before{content:"Ask anything about the data you've uploaded.";color:var(--mut);}
+  .ai-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+  .ai-chip{font-size:12px;color:var(--accent-dk);background:#fde7de;border:none;border-radius:16px;padding:5px 12px;cursor:pointer;}
+  #chart-wrap{height:360px;position:relative;}
+  .foot{color:var(--mut);font-size:13px;text-align:center;margin-top:20px;}
+  details{margin-top:14px;font-size:13px;color:var(--mut);}
+  summary{cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar"><div class="brand">Dashboard Builder</div><div class="tag">Upload any spreadsheet → instant dashboard</div></div>
+
+  <div class="bar">
+    <label class="file btn"><input id="file" type="file" accept=".xlsx,.xls,.xlsm,.csv,.tsv" style="display:none;" />⬆ Upload .xlsx / .csv</label>
+    <button class="btn" id="sample-btn">Load sample data</button>
+    <select id="sheet" style="display:none;"></select>
+    <span class="status" id="status"></span>
+  </div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="controls" id="controls" style="display:none;">
+    <div><label>Chart</label><select id="c-type"><option>Bar</option><option>Line</option><option>Scatter</option><option>Pie</option><option>Histogram</option></select></div>
+    <div><label>X axis</label><select id="c-x"></select></div>
+    <div><label>Y (measure)</label><select id="c-y"></select></div>
+    <div><label>Group</label><select id="c-color"></select></div>
+    <div><label>Aggregate</label><select id="c-agg"><option>sum</option><option>mean</option><option>count</option><option>none</option></select></div>
+  </div>
+
+  <div class="filters" id="filters"></div>
+
+  <div class="panel" id="chart-wrap" style="display:none;"><canvas id="chart"></canvas></div>
+
+  <div id="profile"></div>
+
+  <div class="foot">Runs entirely in your browser — nothing is uploaded to any server.</div>
+</div>
+
+<button id="ai-fab" class="ai-fab" title="Ask AI about your data">Ask AI</button>
+<div id="ai-box" class="ai-box ai-hidden">
+  <div class="ai-box-head">
+    <div><div class="ai-title">Ask AI about your data</div><div class="ai-badge">Azure OpenAI · stays in your tenant</div></div>
+    <button id="ai-close" class="ai-close">&times;</button>
+  </div>
+  <div class="ai-answer" id="ai-answer"></div>
+  <div class="ai-chips" id="ai-chips"></div>
+  <div class="ai-row">
+    <input id="ai-q" class="ai-input" type="text" placeholder="Ask about your sheet…" />
+    <button id="ai-ask" class="ai-send">Send</button>
+  </div>
+  <div class="ai-hint">Preview answers locally. The deployed app uses Azure OpenAI in your tenant.</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+(function(){
+  var RAMP=["#f8511f","#2c2c2c","#8a8a8a","#c23a12","#5a5a5a","#fba07f","#b0b0b0","#7a1e08"];
+  var state={rows:[],cols:[],types:{}}, chart=null;
+  var $=function(id){return document.getElementById(id);};
+
+  function classify(rows,cols){
+    var t={numeric:[],date:[],cat:[],text:[]};
+    cols.forEach(function(c){
+      var vals=rows.map(function(r){return r[c];}).filter(function(v){return v!==null&&v!==undefined&&v!=="";});
+      if(!vals.length){t.text.push(c);return;}
+      var nums=vals.filter(function(v){return typeof v==="number"||(!isNaN(parseFloat(v))&&isFinite(v));});
+      var dates=vals.filter(function(v){return typeof v!=="number"&&!isNaN(Date.parse(v));});
+      if(nums.length/vals.length>0.8)t.numeric.push(c);
+      else if(dates.length/vals.length>0.8)t.date.push(c);
+      else{var u={};vals.forEach(function(v){u[v]=1;});Object.keys(u).length<=30?t.cat.push(c):t.text.push(c);}
+    });
+    return t;
+  }
+  function fmt(n){if(Math.abs(n)>=1000)return n.toLocaleString(undefined,{maximumFractionDigits:0});return (Math.round(n*100)/100).toLocaleString();}
+  function opts(sel,arr,v0){sel.innerHTML="";arr.forEach(function(o){var e=document.createElement("option");e.value=o;e.textContent=o;sel.appendChild(e);});if(v0)sel.value=v0;}
+
+  function render(){
+    var rows=state.rows,t=state.types,kpi=$("kpis");kpi.innerHTML="";
+    function card(title,val,sub){return '<div class="kpi"><div class="kpi-t">'+title+'</div><div class="kpi-v">'+val+'</div>'+(sub?'<div class="kpi-s">'+sub+'</div>':'')+'</div>';}
+    var html=card("Rows",rows.length.toLocaleString())+card("Columns",state.cols.length);
+    t.numeric.slice(0,3).forEach(function(c){var s=0,n=0;rows.forEach(function(r){var v=parseFloat(r[c]);if(!isNaN(v)){s+=v;n++;}});html+=card(c,fmt(s),"avg "+fmt(n?s/n:0));});
+    kpi.innerHTML=html;
+    opts($("c-x"),state.cols,(t.date.concat(t.cat,state.cols))[0]);
+    opts($("c-y"),t.numeric.length?t.numeric:["(none)"],t.numeric[0]);
+    opts($("c-color"),["(none)"].concat(t.cat),t.cat[0]||"(none)");
+    $("controls").style.display="grid";$("chart-wrap").style.display="block";
+    var fl=$("filters");fl.innerHTML="";
+    t.cat.slice(0,3).forEach(function(c){
+      var u={};rows.forEach(function(r){if(r[c]!==undefined&&r[c]!=="")u[r[c]]=1;});
+      var sel=document.createElement("select");sel.multiple=true;sel.dataset.col=c;sel.style.height="80px";
+      Object.keys(u).sort().forEach(function(v){var e=document.createElement("option");e.value=v;e.textContent=v;sel.appendChild(e);});
+      sel.addEventListener("change",draw);
+      var w=document.createElement("div");w.innerHTML='<label>Filter: '+c+'</label>';w.appendChild(sel);fl.appendChild(w);
+    });
+    var prof=t.numeric.map(function(c){return c+" (num)";}).concat(t.date.map(function(c){return c+" (date)";}),t.cat.map(function(c){return c+" (cat)";}));
+    $("profile").innerHTML='<details><summary>Column profile</summary><div style="margin-top:8px;line-height:1.8;">'+prof.join(" · ")+'</div></details>';
+    setupAI();
+    draw();
+  }
+
+  function num(v){var n=parseFloat(v);return isNaN(n)?null:n;}
+  function groupAgg(col,measure,how){
+    var g={};state.rows.forEach(function(r){var k=r[col];if(k===undefined||k==="")return;g[k]=g[k]||{s:0,c:0};var v=num(r[measure]);if(v!==null){g[k].s+=v;g[k].c++;}});
+    var out=Object.keys(g).map(function(k){return {k:k,v:how==="mean"?(g[k].c?g[k].s/g[k].c:0):g[k].s};});
+    out.sort(function(a,b){return b.v-a.v;});return out;
+  }
+  function localAnswer(q){
+    var t=state.types,ql=q.toLowerCase();
+    if(!state.rows.length)return "Load data first.";
+    if(/how many rows|row count|number of rows/.test(ql))return "This sheet has "+state.rows.length.toLocaleString()+" rows and "+state.cols.length+" columns.";
+    if(/what columns|list columns|which columns/.test(ql))return "Columns: "+state.cols.join(", ")+".";
+    var measure=t.numeric.find(function(c){return ql.indexOf(c.toLowerCase())>-1;})||t.numeric[0];
+    var cat=t.cat.find(function(c){return ql.indexOf(c.toLowerCase())>-1;});
+    var how=/average|mean|avg/.test(ql)?"mean":"sum";
+    if(/highest|most|top|largest|max|best/.test(ql)&&measure){
+      var by=cat||t.cat[0];if(by){var g=groupAgg(by,measure,how);return "Highest "+how+" of "+measure+" by "+by+": "+g[0].k+" ("+fmt(g[0].v)+"). Lowest: "+g[g.length-1].k+" ("+fmt(g[g.length-1].v)+").";}
+    }
+    if(/lowest|least|smallest|min|worst/.test(ql)&&measure){
+      var by2=cat||t.cat[0];if(by2){var g2=groupAgg(by2,measure,how);return "Lowest "+how+" of "+measure+" by "+by2+": "+g2[g2.length-1].k+" ("+fmt(g2[g2.length-1].v)+").";}
+    }
+    if((/total|sum|average|mean|avg/.test(ql))&&measure){
+      if(cat){var g3=groupAgg(cat,measure,how);return how.charAt(0).toUpperCase()+how.slice(1)+" of "+measure+" by "+cat+":\n"+g3.map(function(o){return "• "+o.k+": "+fmt(o.v);}).join("\n");}
+      var s=0,c=0;state.rows.forEach(function(r){var v=num(r[measure]);if(v!==null){s+=v;c++;}});
+      return (how==="mean"?"Average ":"Total ")+measure+": "+fmt(how==="mean"?(c?s/c:0):s)+" across "+c+" rows.";
+    }
+    var parts=t.numeric.slice(0,3).map(function(cc){var s=0,c=0;state.rows.forEach(function(r){var v=num(r[cc]);if(v!==null){s+=v;c++;}});return cc+" total "+fmt(s)+" (avg "+fmt(c?s/c:0)+")";});
+    return "I read this locally. Here's a quick summary — "+parts.join("; ")+". Try: \"total Revenue by Region\" or \"which Product has the highest Units\". The deployed app answers any question via Azure OpenAI.";
+  }
+  function setupAI(){
+    $("ai-fab").style.display="block";
+    var chips=$("ai-chips");chips.innerHTML="";
+    var t=state.types,m=t.numeric[0],c=t.cat[0];
+    var sug=[];
+    if(m&&c){sug.push("Which "+c+" has the highest total "+m+"?");sug.push("Total "+m+" by "+c);}
+    sug.push("How many rows are there?");
+    sug.forEach(function(s){var b=document.createElement("button");b.className="ai-chip";b.textContent=s;b.onclick=function(){$("ai-q").value=s;runAI();};chips.appendChild(b);});
+  }
+  function runAI(){var q=$("ai-q").value;if(!q.trim())return;$("ai-answer").textContent=localAnswer(q);}
+  function filtered(){var rows=state.rows;document.querySelectorAll("#filters select").forEach(function(sel){var p=Array.prototype.slice.call(sel.selectedOptions).map(function(o){return o.value;});if(p.length){var c=sel.dataset.col;rows=rows.filter(function(r){return p.indexOf(String(r[c]))>-1;});}});return rows;}
+  function aggregate(rows,x,y,color){var g={};rows.forEach(function(r){var k=r[x],ck=color&&color!=="(none)"?r[color]:"_";g[k]=g[k]||{};g[k][ck]=g[k][ck]||{sum:0,cnt:0};var v=parseFloat(r[y]);g[k][ck].sum+=isNaN(v)?0:v;g[k][ck].cnt++;});return g;}
+
+  function draw(){
+    var rows=filtered(),type=$("c-type").value,x=$("c-x").value,y=$("c-y").value,color=$("c-color").value,agg=$("c-agg").value;
+    if(chart){chart.destroy();chart=null;}
+    var ctx=$("chart").getContext("2d"),labels=[],datasets=[];
+    if(type==="Histogram"){
+      var vals=rows.map(function(r){return parseFloat(r[x]);}).filter(function(v){return !isNaN(v);});
+      if(!vals.length)vals=rows.map(function(r){return parseFloat(r[y]);}).filter(function(v){return !isNaN(v);});
+      var mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals),bins=10,w=(mx-mn)/bins||1,cc=new Array(bins).fill(0);
+      vals.forEach(function(v){cc[Math.min(bins-1,Math.floor((v-mn)/w))]++;});
+      for(var i=0;i<bins;i++)labels.push(fmt(mn+i*w));
+      datasets=[{label:x,data:cc,backgroundColor:RAMP[0]}];type="bar";
+    } else if(type==="Scatter"){
+      var pts=rows.map(function(r){return {x:parseFloat(r[x]),y:parseFloat(r[y])};}).filter(function(p){return !isNaN(p.x)&&!isNaN(p.y);});
+      datasets=[{label:y+" vs "+x,data:pts,backgroundColor:RAMP[0]}];type="scatter";
+    } else {
+      var g=aggregate(rows,x,y,color),lk=Object.keys(g),series={};
+      lk.forEach(function(k){Object.keys(g[k]).forEach(function(ck){series[ck]=1;});});
+      var sn=Object.keys(series);labels=lk;
+      function val(c){if(!c)return 0;if(agg==="count")return c.cnt;if(agg==="mean")return c.cnt?c.sum/c.cnt:0;return c.sum;}
+      if(type==="Pie"){datasets=[{data:lk.map(function(k){return Math.round(val(g[k]["_"]||Object.values(g[k])[0])*100)/100;}),backgroundColor:lk.map(function(_,i){return RAMP[i%RAMP.length];})}];type="pie";}
+      else{datasets=sn.map(function(ck,i){return {label:ck==="_"?y:ck,data:lk.map(function(k){return Math.round(val(g[k][ck])*100)/100;}),backgroundColor:RAMP[i%RAMP.length],borderColor:RAMP[i%RAMP.length],fill:false,tension:0.2};});type=type.toLowerCase();}
+    }
+    chart=new Chart(ctx,{type:type,data:{labels:labels,datasets:datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:datasets.length>1||type==="pie"}}}});
+  }
+
+  function ingest(wb){
+    var ss=$("sheet");ss.innerHTML="";wb.SheetNames.forEach(function(n){var o=document.createElement("option");o.value=n;o.textContent=n;ss.appendChild(o);});
+    ss.style.display=wb.SheetNames.length>1?"inline-block":"none";
+    function load(name){var json=XLSX.utils.sheet_to_json(wb.Sheets[name],{defval:null});state.rows=json;state.cols=json.length?Object.keys(json[0]):[];state.types=classify(json,state.cols);$("status").textContent=name+" — "+json.length+" rows, "+state.cols.length+" cols";render();}
+    ss.onchange=function(){load(ss.value);};load(wb.SheetNames[0]);
+  }
+  $("file").addEventListener("change",function(e){var f=e.target.files[0];if(!f)return;$("status").textContent="Reading "+f.name+"…";var rd=new FileReader();rd.onload=function(ev){try{ingest(XLSX.read(ev.target.result,{type:"array"}));}catch(err){$("status").textContent="⚠ "+err.message;}};rd.readAsArrayBuffer(f);});
+  $("sample-btn").addEventListener("click",function(){
+    var rg=["North","South","East","West"],pr=["Widget","Gadget","Gizmo"],rows=[];
+    for(var i=0;i<240;i++){var d=new Date(2025,0,1+i);rows.push({Date:d.toISOString().slice(0,10),Region:rg[i%4],Product:pr[i%3],Units:Math.floor(Math.random()*50)+1,Revenue:Math.round((Math.random()*4900+100)*100)/100});}
+    state.rows=rows;state.cols=["Date","Region","Product","Units","Revenue"];state.types=classify(rows,state.cols);$("sheet").style.display="none";$("status").textContent="Sample — 240 rows, 5 cols";render();
+  });
+  ["c-type","c-x","c-y","c-color","c-agg"].forEach(function(id){$(id).addEventListener("change",draw);});
+  $("ai-ask").addEventListener("click",runAI);
+  $("ai-q").addEventListener("keydown",function(e){if(e.key==="Enter")runAI();});
+  $("ai-fab").addEventListener("click",function(){$("ai-box").classList.remove("ai-hidden");$("ai-q").focus();});
+  $("ai-close").addEventListener("click",function(){$("ai-box").classList.add("ai-hidden");});
+  $("ai-fab").style.display="none";
+  $("sample-btn").click();
+})();
+</script>
+</body>
+</html>

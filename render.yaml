@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: dashai-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: ENCRYPTION_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        value: '["https://your-app.vercel.app"]'
+      - key: MAX_UPLOAD_SIZE_MB
+        value: "50"
+      - key: LIVE_QUERY_TIMEOUT_SECONDS
+        value: "20"
+      - key: LIVE_QUERY_ROW_LIMIT
+        value: "200000"

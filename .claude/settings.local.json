@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -n \"def get_user\" -A 20 /tmp/dbtool_venv/lib/python3.9/site-packages/gotrue/_sync/gotrue_client.py)",
+      "Bash(grep -n \"class UserResponse\" -A 10 /tmp/dbtool_venv/lib/python3.9/site-packages/gotrue/types.py | head -20)"
+    ]
+  }
+}

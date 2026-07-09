@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 760" font-family="Segoe UI, system-ui, sans-serif">
+  <rect width="1040" height="760" fill="#ffffff"/>
+
+  <!-- Title bar -->
+  <rect x="0" y="0" width="1040" height="74" fill="#ffffff"/>
+  <rect x="0" y="71" width="1040" height="3" fill="#F8511F"/>
+  <text x="40" y="38" font-size="26" font-weight="700" fill="#111111">Dashboard Builder — Security &amp; Compliance</text>
+  <text x="40" y="60" font-size="14" fill="#6b6b6b">Stateless containerized web app on Azure, inside your tenant, behind corporate SSO</text>
+
+  <!-- ===================== Request flow row ===================== -->
+  <text x="40" y="112" font-size="13" font-weight="700" fill="#F8511F" letter-spacing="0.5">REQUEST PATH</text>
+
+  <!-- User -->
+  <rect x="40" y="124" width="150" height="92" rx="8" fill="#f5f5f5" stroke="#d9d9d9"/>
+  <rect x="40" y="124" width="150" height="3" fill="#F8511F"/>
+  <text x="115" y="158" font-size="15" font-weight="700" fill="#111111" text-anchor="middle">Employee</text>
+  <text x="115" y="180" font-size="12" fill="#6b6b6b" text-anchor="middle">Corporate device</text>
+  <text x="115" y="197" font-size="12" fill="#6b6b6b" text-anchor="middle">/ browser</text>
+
+  <!-- arrow -->
+  <line x1="194" y1="170" x2="232" y2="170" stroke="#2c2c2c" stroke-width="2"/>
+  <polygon points="232,164 244,170 232,176" fill="#2c2c2c"/>
+  <text x="219" y="160" font-size="10" fill="#6b6b6b" text-anchor="middle">HTTPS</text>
+
+  <!-- Entra SSO -->
+  <rect x="248" y="124" width="178" height="92" rx="8" fill="#fde7de" stroke="#F8511F"/>
+  <text x="337" y="152" font-size="15" font-weight="700" fill="#7a1e08" text-anchor="middle">Microsoft Entra ID</text>
+  <text x="337" y="172" font-size="12" fill="#7a1e08" text-anchor="middle">SSO + MFA + Conditional</text>
+  <text x="337" y="188" font-size="12" fill="#7a1e08" text-anchor="middle">Access (Easy Auth)</text>
+  <text x="337" y="206" font-size="11" fill="#c23a12" text-anchor="middle">Login enforced BEFORE the app</text>
+
+  <!-- arrow -->
+  <line x1="430" y1="170" x2="468" y2="170" stroke="#2c2c2c" stroke-width="2"/>
+  <polygon points="468,164 480,170 468,176" fill="#2c2c2c"/>
+  <text x="455" y="160" font-size="10" fill="#6b6b6b" text-anchor="middle">token</text>
+
+  <!-- Container App -->
+  <rect x="484" y="124" width="200" height="92" rx="8" fill="#f5f5f5" stroke="#d9d9d9"/>
+  <rect x="484" y="124" width="200" height="3" fill="#F8511F"/>
+  <text x="584" y="152" font-size="15" font-weight="700" fill="#111111" text-anchor="middle">Azure Container Apps</text>
+  <text x="584" y="172" font-size="12" fill="#6b6b6b" text-anchor="middle">TLS terminated · autoscale</text>
+  <text x="584" y="189" font-size="12" fill="#6b6b6b" text-anchor="middle">Optional internal-only ingress</text>
+  <text x="584" y="206" font-size="11" fill="#6b6b6b" text-anchor="middle">(VNet / private endpoint)</text>
+
+  <!-- arrow -->
+  <line x1="688" y1="170" x2="726" y2="170" stroke="#2c2c2c" stroke-width="2"/>
+  <polygon points="726,164 738,170 726,176" fill="#2c2c2c"/>
+
+  <!-- App container -->
+  <rect x="742" y="124" width="258" height="92" rx="8" fill="#2c2c2c"/>
+  <text x="871" y="152" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">Dash app container</text>
+  <text x="871" y="172" font-size="12" fill="#d9d9d9" text-anchor="middle">Non-root · slim image · gunicorn</text>
+  <text x="871" y="189" font-size="12" fill="#fba07f" text-anchor="middle">Data held in session only</text>
+  <text x="871" y="206" font-size="11" fill="#d9d9d9" text-anchor="middle">Nothing written to disk</text>
+
+  <!-- ===================== Five pillars ===================== -->
+  <text x="40" y="270" font-size="13" font-weight="700" fill="#F8511F" letter-spacing="0.5">COMPLIANCE CONTROLS</text>
+
+  <!-- Pillar template: 5 cards -->
+  <!-- 1 Identity -->
+  <rect x="40" y="286" width="184" height="220" rx="8" fill="#ffffff" stroke="#d9d9d9"/>
+  <rect x="40" y="286" width="184" height="4" fill="#F8511F"/>
+  <text x="58" y="318" font-size="15" font-weight="700" fill="#111111">Identity &amp; access</text>
+  <text x="58" y="346" font-size="12" fill="#444">• Entra ID SSO, no app</text>
+  <text x="58" y="362" font-size="12" fill="#444">  passwords to manage</text>
+  <text x="58" y="384" font-size="12" fill="#444">• Inherits MFA &amp;</text>
+  <text x="58" y="400" font-size="12" fill="#444">  Conditional Access</text>
+  <text x="58" y="422" font-size="12" fill="#444">• "Assignment required"</text>
+  <text x="58" y="438" font-size="12" fill="#444">  limits to named</text>
+  <text x="58" y="454" font-size="12" fill="#444">  users / groups</text>
+  <text x="58" y="476" font-size="12" fill="#444">• RBAC for management</text>
+  <text x="58" y="492" font-size="12" fill="#444">  operations</text>
+
+  <!-- 2 Network -->
+  <rect x="236" y="286" width="184" height="220" rx="8" fill="#ffffff" stroke="#d9d9d9"/>
+  <rect x="236" y="286" width="184" height="4" fill="#F8511F"/>
+  <text x="254" y="318" font-size="15" font-weight="700" fill="#111111">Network</text>
+  <text x="254" y="346" font-size="12" fill="#444">• HTTPS / TLS by</text>
+  <text x="254" y="362" font-size="12" fill="#444">  default</text>
+  <text x="254" y="384" font-size="12" fill="#444">• Internal-only ingress</text>
+  <text x="254" y="400" font-size="12" fill="#444">  option (VNet)</text>
+  <text x="254" y="422" font-size="12" fill="#444">• Private endpoints</text>
+  <text x="254" y="444" font-size="12" fill="#444">• Reachable only from</text>
+  <text x="254" y="460" font-size="12" fill="#444">  corp network / VPN</text>
+
+  <!-- 3 Data protection -->
+  <rect x="432" y="286" width="184" height="220" rx="8" fill="#fde7de" stroke="#F8511F"/>
+  <rect x="432" y="286" width="184" height="4" fill="#F8511F"/>
+  <text x="450" y="318" font-size="15" font-weight="700" fill="#7a1e08">Data protection</text>
+  <text x="450" y="346" font-size="12" fill="#7a1e08">• No data at rest —</text>
+  <text x="450" y="362" font-size="12" fill="#7a1e08">  nothing persisted</text>
+  <text x="450" y="384" font-size="12" fill="#7a1e08">• Uploads live in the</text>
+  <text x="450" y="400" font-size="12" fill="#7a1e08">  browser session only</text>
+  <text x="450" y="422" font-size="12" fill="#7a1e08">• Restart wipes all</text>
+  <text x="450" y="438" font-size="12" fill="#7a1e08">  in-memory data</text>
+  <text x="450" y="460" font-size="12" fill="#7a1e08">• Small compliance</text>
+  <text x="450" y="476" font-size="12" fill="#7a1e08">  surface to audit</text>
+
+  <!-- 4 Container hardening -->
+  <rect x="628" y="286" width="184" height="220" rx="8" fill="#ffffff" stroke="#d9d9d9"/>
+  <rect x="628" y="286" width="184" height="4" fill="#F8511F"/>
+  <text x="646" y="318" font-size="15" font-weight="700" fill="#111111">Container hardening</text>
+  <text x="646" y="346" font-size="12" fill="#444">• Runs as non-root</text>
+  <text x="646" y="362" font-size="12" fill="#444">  (uid 10001)</text>
+  <text x="646" y="384" font-size="12" fill="#444">• Minimal slim base</text>
+  <text x="646" y="400" font-size="12" fill="#444">  image</text>
+  <text x="646" y="422" font-size="12" fill="#444">• Private registry,</text>
+  <text x="646" y="438" font-size="12" fill="#444">  admin disabled</text>
+  <text x="646" y="460" font-size="12" fill="#444">• Managed-identity pull</text>
+  <text x="646" y="482" font-size="12" fill="#444">• Defender image scan</text>
+
+  <!-- 5 Governance -->
+  <rect x="824" y="286" width="176" height="220" rx="8" fill="#ffffff" stroke="#d9d9d9"/>
+  <rect x="824" y="286" width="176" height="4" fill="#F8511F"/>
+  <text x="842" y="318" font-size="15" font-weight="700" fill="#111111">Governance</text>
+  <text x="842" y="346" font-size="12" fill="#444">• Runs in YOUR</text>
+  <text x="842" y="362" font-size="12" fill="#444">  subscription/tenant</text>
+  <text x="842" y="384" font-size="12" fill="#444">• Azure Monitor /</text>
+  <text x="842" y="400" font-size="12" fill="#444">  Log Analytics</text>
+  <text x="842" y="422" font-size="12" fill="#444">• Sign-in &amp; access</text>
+  <text x="842" y="438" font-size="12" fill="#444">  logs in Entra</text>
+  <text x="842" y="460" font-size="12" fill="#444">• No third-party SaaS;</text>
+  <text x="842" y="476" font-size="12" fill="#444">  data never leaves</text>
+  <text x="842" y="492" font-size="12" fill="#444">  your cloud</text>
+
+  <!-- ===================== Boundary note ===================== -->
+  <rect x="40" y="534" width="960" height="120" rx="8" fill="#f5f5f5" stroke="#d9d9d9"/>
+  <rect x="40" y="534" width="4" height="120" fill="#F8511F"/>
+  <text x="62" y="566" font-size="15" font-weight="700" fill="#111111">Why this satisfies corporate cybersecurity review</text>
+  <text x="62" y="592" font-size="13" fill="#444">Authentication is enforced by the Azure platform — not by app code — so there is no custom auth to misconfigure or audit. The</text>
+  <text x="62" y="612" font-size="13" fill="#444">app is stateless and stores no data, the image is private and runs non-root, and the entire stack lives inside your own Azure</text>
+  <text x="62" y="632" font-size="13" fill="#444">tenant. Identity, network, logging, and key management all inherit your existing enterprise policies and controls.</text>
+
+  <!-- footer -->
+  <text x="40" y="704" font-size="11" fill="#9a9a9a">Architecture reference · Dashboard Builder · deploys via deploy-azure.sh</text>
+</svg>
