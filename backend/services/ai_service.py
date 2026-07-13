@@ -9,11 +9,16 @@ from google.genai import types
 from config import get_settings
 from models.schemas import ChartConfig, ChatMessage, Dashboard
 
-settings = get_settings()
-
-client = genai.Client(api_key=settings.gemini_api_key)
-
 MODEL = "gemini-2.5-flash"
+
+_client: genai.Client | None = None
+
+
+def _get_client() -> genai.Client:
+    global _client
+    if _client is None:
+        _client = genai.Client(api_key=get_settings().gemini_api_key)
+    return _client
 
 
 def _dataset_context(summary: dict) -> str:
@@ -153,7 +158,7 @@ Guidelines:
     messages = [user_msg]
 
     for _attempt in range(2):
-        response = await client.aio.models.generate_content(
+        response = await _get_client().aio.models.generate_content(
             model=MODEL,
             contents=messages,
             config=types.GenerateContentConfig(
@@ -240,7 +245,7 @@ the data conversationally. You cannot modify the dashboard."""
         cfg_kwargs["tools"] = [tool]
         cfg_kwargs["tool_config"] = tool_config
 
-    response = await client.aio.models.generate_content(
+    response = await _get_client().aio.models.generate_content(
         model=MODEL,
         contents=contents,
         config=types.GenerateContentConfig(**cfg_kwargs),
