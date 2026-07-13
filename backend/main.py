@@ -1,27 +1,37 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+import sys
+import traceback
 
-from config import get_settings
-from routers import chart_data, dashboards, datasets, public
+try:
+    from fastapi import FastAPI
+    from fastapi.middleware.cors import CORSMiddleware
 
-settings = get_settings()
+    from config import get_settings
+    from routers import chart_data, dashboards, datasets, public
 
-app = FastAPI(title="Dashboarding Tool API", version="1.0.0")
+    settings = get_settings()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.cors_origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+    app = FastAPI(title="Dashboarding Tool API", version="1.0.0")
 
-app.include_router(datasets.router)
-app.include_router(dashboards.router)
-app.include_router(chart_data.router)
-app.include_router(public.router)
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.cors_origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
+    app.include_router(datasets.router)
+    app.include_router(dashboards.router)
+    app.include_router(chart_data.router)
+    app.include_router(public.router)
 
-@app.get("/health")
-def health():
-    return {"status": "ok"}
+    @app.get("/health")
+    def health():
+        return {"status": "ok"}
+
+    print("STARTUP OK", flush=True)
+
+except Exception as _e:
+    traceback.print_exc()
+    print(f"\nSTARTUP FAILED: {_e}", file=sys.stderr, flush=True)
+    sys.exit(1)
